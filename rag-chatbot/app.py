@@ -87,15 +87,35 @@ st.divider()
 # --------------------------------------------------------------------------
 # SIDEBAR
 # --------------------------------------------------------------------------
+# Try to load a pre-configured key from Streamlit secrets (set by the owner).
+# Visitors then don't need their own key at all.
+try:
+    default_api_key = st.secrets["GROQ_API_KEY"]
+    key_preconfigured = True
+except (KeyError, FileNotFoundError):
+    default_api_key = ""
+    key_preconfigured = False
+
 with st.sidebar:
     st.header("Settings")
 
-    api_key = st.text_input(
-        "Groq API Key",
-        type="password",
-        help="Get a free key at console.groq.com - no credit card needed.",
-        value=os.environ.get("GROQ_API_KEY", "")
-    )
+    if key_preconfigured:
+        st.success("Running on the owner's API key - no setup needed!")
+        api_key = default_api_key
+        with st.expander("Use your own Groq API key instead"):
+            custom_key = st.text_input(
+                "Your Groq API Key",
+                type="password",
+                help="Get a free key at console.groq.com",
+            )
+            if custom_key:
+                api_key = custom_key
+    else:
+        api_key = st.text_input(
+            "Groq API Key",
+            type="password",
+            help="Get a free key at console.groq.com - no credit card needed.",
+        )
 
     st.markdown("---")
     st.subheader("Knowledge Base")
