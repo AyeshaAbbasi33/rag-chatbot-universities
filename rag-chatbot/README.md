@@ -85,15 +85,23 @@ rag-chatbot-universities/
 ├── app.py                          # Main Streamlit application
 ├── requirements.txt                # Python dependencies
 ├── data/
+
 │   ├── nust_admissions.txt         # NUST admission knowledge base
+
 │   ├── lums_admissions.txt         # LUMS admission knowledge base
+
 │   └── riphah_admissions.txt       # Riphah admission knowledge base
 
 ├── screenshots/
+
   └── picture 1.png                    # App screenshot
+  
     ├── picture 2.png
+    
     └── picture 2.png
+    
 ├── .gitignore
+
 
 └── README.md
 
