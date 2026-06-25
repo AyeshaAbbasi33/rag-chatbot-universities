@@ -83,7 +83,9 @@ Paste your Groq API key into the sidebar when the app opens in your browser.
 rag-chatbot-universities/
 
 ├── app.py                          # Main Streamlit application
+
 ├── requirements.txt                # Python dependencies
+ 
 ├── data/
 
 │   ├── nust_admissions.txt         # NUST admission knowledge base
@@ -95,8 +97,8 @@ rag-chatbot-universities/
 ├── screenshots/
 
   └── picture 1.png                    # App screenshot
-  
-    ├── picture 2.png
+   
+   ├── picture 2.png
     
     └── picture 2.png
     
