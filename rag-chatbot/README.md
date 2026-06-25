@@ -8,10 +8,10 @@ A Retrieval-Augmented Generation chatbot that answers natural-language questions
 ![LangChain](https://img.shields.io/badge/LangChain-RAG-orange)
 
 screenshots
-<img width="600" height="600" alt="picture 3" src="https://github.com/user-attachments/assets/fbf5d970-12e9-4d56-93b6-f8abcde10664" />
-<img width="600" height="600" alt="picture 2" src="https://github.com/user-attachments/assets/2043fa79-3a5b-437f-a64f-37a04b29534c" />
-
-
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/fbf5d970-12e9-4d56-93b6-f8abcde10664" alt="App Screenshot" width="650">
+  <img src="https://github.com/user-attachments/assets/2043fa79-3a5b-437f-a64f-37a04b29534c" alt="App Screenshot" width="650">
+</p>" 
 
 
 ## What This Project Does
