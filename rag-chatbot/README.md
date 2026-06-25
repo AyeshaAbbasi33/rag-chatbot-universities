@@ -1,17 +1,17 @@
-# 🎓 Pakistani University Admissions RAG Chatbot
+#  Pakistani University Admissions RAG Chatbot
 
 A Retrieval-Augmented Generation (RAG) chatbot that answers natural-language questions about university admissions in Pakistan — built end-to-end with LangChain, FAISS, and Groq's free LLM API. No local model installation required; runs entirely on cloud inference.
 
-**[Live Demo](https://your-app-name.streamlit.app)** *(add your Streamlit Cloud link here after deploying)*
+**[Live Demo](https://rag-chatbot-universities-mxpgswcvktoc3bq2qiuhjj.streamlit.app/)** *(add your Streamlit Cloud link here after deploying)*
 
 ![Status](https://img.shields.io/badge/status-live-success)
 ![Python](https://img.shields.io/badge/python-3.11-blue)
 ![LangChain](https://img.shields.io/badge/LangChain-RAG-orange)
 
-![App Screenshot](screenshots/demo.png)
-*(Add a screenshot of your running app here)*
+![App Screenshot](screenshots/picture3.png)
 
----
+
+
 
 ## What This Project Does
 
@@ -23,18 +23,18 @@ Ask questions like:
 
 The chatbot retrieves the most relevant passages from real admission documents (NUST, LUMS, and Riphah International University) and generates a grounded, accurate answer — instead of hallucinating from general knowledge.
 
----
+
 
 ## Why I Built This
 
 Most "ChatGPT wrapper" projects just call an LLM directly and hope for the best. This project demonstrates **Retrieval-Augmented Generation (RAG)** — the technique that makes LLMs reliable for domain-specific, factual question answering. It's the same core architecture used in enterprise AI assistants and customer support bots in production today.
 
 I chose Pakistani university admissions specifically because:
-1. It's a real problem — thousands of students struggle to find accurate, consolidated admission info every year.
+1. It's a real problem because  thousands of students struggle to find accurate, consolidated admission info every year.
 2. I understand the domain personally as a current CS student going through this system.
 3. It let me work with real-world messy data (different fee structures, eligibility rules, and formats across universities).
 
----
+
 
 ## How It Works (Architecture)
 
@@ -60,7 +60,7 @@ User Question  →  Embed Question  →  FAISS Similarity Search  ←  Vector St
 6. **Generation** — The retrieved chunks + the original question are passed to **Groq's Llama 3.1 8B Instant** model via a custom prompt template that forces the model to answer only from the provided context — preventing hallucination.
 7. **Citation** — The app displays which university's documents were used to generate the answer, with an expandable view of the raw retrieved passages.
 
----
+
 
 ## Tech Stack
 
@@ -73,7 +73,6 @@ User Question  →  Embed Question  →  FAISS Similarity Search  ←  Vector St
 | Frontend | Streamlit | Fast to build, free hosting on Streamlit Cloud |
 | Deployment | Streamlit Community Cloud | Free, zero-config hosting |
 
----
 
 ## Run It Yourself
 
@@ -92,6 +91,7 @@ pip install -r requirements.txt
 - Go to [console.groq.com](https://console.groq.com)
 - Sign up (free, no credit card)
 - Create an API key
+- or you can ask few questions for on the owners API Key
 
 ### 4. Run the app
 ```bash
@@ -99,7 +99,7 @@ streamlit run app.py
 ```
 Paste your Groq API key into the sidebar when the app opens in your browser.
 
----
+
 
 ## Project Structure
 
@@ -112,12 +112,15 @@ rag-chatbot-universities/
 │   ├── lums_admissions.txt         # LUMS admission knowledge base
 │   └── riphah_admissions.txt       # Riphah admission knowledge base
 ├── screenshots/
-│   └── demo.png                    # App screenshot
-├── .gitignore
-└── README.md
+│   └── picture 1.png
+    ├── picture 2.png
+    └── picture 3.png
+ # App screenshot
+   ├── .gitignore
+   └── README.md
 ```
 
----
+
 
 ## What I Learned Building This
 
@@ -127,7 +130,7 @@ rag-chatbot-universities/
 - **Cloud-first architecture**: building an LLM app with zero local model downloads — useful for resource-constrained environments
 - **Source attribution**: showing users which document an answer came from builds trust and lets them verify
 
----
+
 
 ## Future Improvements
 
@@ -137,7 +140,7 @@ rag-chatbot-universities/
 - [ ] Add a feedback mechanism (thumbs up/down) to track answer quality
 - [ ] Multilingual support (Urdu queries)
 
----
+
 
 ## Author
 
@@ -145,6 +148,6 @@ rag-chatbot-universities/
 CS Student @ Riphah International University, Islamabad
 [LinkedIn](https://linkedin.com/in/ayesha-abbasi-3215a7321) · [GitHub](https://github.com/AyeshaAbbasi33)
 
----
 
-*Built as part of my AI/ML portfolio — Summer 2026.*
+
+
