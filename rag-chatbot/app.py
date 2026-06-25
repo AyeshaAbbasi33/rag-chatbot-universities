@@ -1,9 +1,11 @@
 """
 Pakistani University Admissions RAG Chatbot
-
+=============================================
 A Retrieval-Augmented Generation chatbot that answers questions about
 admissions at NUST, LUMS, and Riphah International University using
 real document content and the Groq API (cloud LLM - no local install needed).
+
+Author: Ayesha Abbasi
 """
 
 import os
@@ -17,18 +19,23 @@ try:
 except ImportError:
     from langchain_community.embeddings import HuggingFaceEmbeddings
 
-from langchain.chains import RetrievalQA
 from langchain_groq import ChatGroq
-from langchain_core.prompts import PromptTemplate
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.runnables import RunnablePassthrough
+from langchain_core.output_parsers import StrOutputParser
 
+# --------------------------------------------------------------------------
 # PAGE CONFIG
+# --------------------------------------------------------------------------
 st.set_page_config(
     page_title="Pakistani University Admissions Assistant",
     page_icon=":mortar_board:",
     layout="wide",
 )
 
+# --------------------------------------------------------------------------
 # CUSTOM STYLING
+# --------------------------------------------------------------------------
 st.markdown("""
 <style>
     .main-header {
@@ -59,8 +66,9 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+# --------------------------------------------------------------------------
 # HEADER
-
+# --------------------------------------------------------------------------
 st.markdown('<p class="main-header">Pakistani University Admissions Assistant</p>', unsafe_allow_html=True)
 st.markdown(
     '<p class="sub-header">Ask questions about admissions at NUST, LUMS, and Riphah International University - '
@@ -76,7 +84,9 @@ st.markdown(
 )
 st.divider()
 
+# --------------------------------------------------------------------------
 # SIDEBAR
+# --------------------------------------------------------------------------
 with st.sidebar:
     st.header("Settings")
 
@@ -113,8 +123,9 @@ with st.sidebar:
     st.markdown("---")
     st.caption("Built by Ayesha Abbasi | Powered by LangChain + Groq + FAISS")
 
+# --------------------------------------------------------------------------
 # RAG PIPELINE SETUP (cached so it only runs once)
-
+# --------------------------------------------------------------------------
 @st.cache_resource(show_spinner=False)
 def load_knowledge_base():
     """Load all university documents, chunk them, and build a FAISS vector store."""
@@ -148,7 +159,7 @@ def load_knowledge_base():
 
 @st.cache_resource(show_spinner=False)
 def get_qa_chain(_vectorstore, api_key):
-    """Build the RetrievalQA chain using Groq's free, fast LLM API."""
+    """Build the RAG chain using Groq's free, fast LLM API (modern LCEL pattern)."""
     llm = ChatGroq(
         groq_api_key=api_key,
         model_name="llama-3.1-8b-instant",
@@ -167,22 +178,25 @@ Question: {question}
 
 Answer:"""
 
-    prompt = PromptTemplate(template=prompt_template, input_variables=["context", "question"])
+    prompt = ChatPromptTemplate.from_template(prompt_template)
     retriever = _vectorstore.as_retriever(search_kwargs={"k": 4})
 
-    chain = RetrievalQA.from_chain_type(
-        llm=llm,
-        chain_type="stuff",
-        retriever=retriever,
-        chain_type_kwargs={"prompt": prompt},
-        return_source_documents=True,
+    def format_docs(docs):
+        return "\n\n".join(doc.page_content for doc in docs)
+
+    rag_chain = (
+        {"context": retriever | format_docs, "question": RunnablePassthrough()}
+        | prompt
+        | llm
+        | StrOutputParser()
     )
-    return chain
+
+    return rag_chain, retriever
 
 
-
+# --------------------------------------------------------------------------
 # MAIN APP LOGIC
-
+# --------------------------------------------------------------------------
 if not api_key:
     st.info("Please enter your free Groq API key in the sidebar to start chatting. "
             "Get one in 2 minutes at **console.groq.com**")
@@ -190,7 +204,7 @@ if not api_key:
 
 with st.spinner("Loading knowledge base... (first time only, ~10 seconds)"):
     vectorstore = load_knowledge_base()
-    qa_chain = get_qa_chain(vectorstore, api_key)
+    rag_chain, retriever = get_qa_chain(vectorstore, api_key)
 
 if "messages" not in st.session_state:
     st.session_state.messages = [
@@ -214,9 +228,8 @@ if question:
     with st.chat_message("assistant"):
         with st.spinner("Searching admission documents..."):
             try:
-                result = qa_chain({"query": question})
-                answer = result["result"]
-                sources = result.get("source_documents", [])
+                sources = retriever.invoke(question)
+                answer = rag_chain.invoke(question)
 
                 st.markdown(answer)
 
