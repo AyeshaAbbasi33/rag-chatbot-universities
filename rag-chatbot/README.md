@@ -1,13 +1,13 @@
 # Pakistani University Admissions RAG Chatbot
 A Retrieval-Augmented Generation chatbot that answers natural-language questions about university admissions in Pakistan, built with LangChain, FAISS, and Groq's free LLM API. No local model installation required — it runs entirely on cloud inference.
 
-**[Live Demo](https://your-app-name.streamlit.app)** *(add your Streamlit Cloud link here after deploying)*
+**[Live Demo](https://rag-chatbot-universities-mxpgswcvktoc3bq2qiuhjj.streamlit.app/)
 
 ![Status](https://img.shields.io/badge/status-live-success)
 ![Python](https://img.shields.io/badge/python-3.11-blue)
 ![LangChain](https://img.shields.io/badge/LangChain-RAG-orange)
 
-![App Screenshot](screenshots/picture 3.png)
+(screenshots/picture 3.png)
 <img width="1323" height="550" alt="picture 3" src="https://github.com/user-attachments/assets/fbf5d970-12e9-4d56-93b6-f8abcde10664" />
 
 
