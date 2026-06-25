@@ -7,8 +7,9 @@ A Retrieval-Augmented Generation chatbot that answers natural-language questions
 ![Python](https://img.shields.io/badge/python-3.11-blue)
 ![LangChain](https://img.shields.io/badge/LangChain-RAG-orange)
 
-(screenshots/picture 3.png)
+screenshots
 <img width="1323" height="550" alt="picture 3" src="https://github.com/user-attachments/assets/fbf5d970-12e9-4d56-93b6-f8abcde10664" />
+<img width="1352" height="563" alt="picture 2" src="https://github.com/user-attachments/assets/2043fa79-3a5b-437f-a64f-37a04b29534c" />
 
 
 
@@ -31,21 +32,13 @@ I picked Pakistani university admissions specifically because it's a real proble
 
 ## How It Works
 Admission Docs (.txt) -> Chunking (LangChain) -> Embeddings (MiniLM-L6-v2)
-
 |
-
 User Question -> Embed Question -> FAISS Similarity Search <- Vector Store
-
 |
-
 Top-K Relevant Chunks
-
 |
-
 Chunks + Question -> Groq LLM (Llama 3.1)
-
 |
-
 Grounded Answer + Source Citation
 
 
@@ -104,9 +97,9 @@ rag-chatbot-universities/
 
 └── README.md
 
-## What I Learned Building This
+## What I actually learned doing this
 
-Retrieval grounds an LLM's answers and prevents hallucination on domain-specific facts, but the chunking strategy matters more than I expected going in: smaller chunks with overlap retrieve more precisely than dumping whole documents into context. Prompt engineering for groundedness mattered too, explicitly instructing the model to say "I don't know" when context is insufficient rather than guessing. Building this cloud-first, with zero local model downloads, also turned out to be a genuinely useful constraint for resource-limited environments rather than just a workaround. Showing users which document an answer came from builds trust and lets them verify the claim themselves instead of taking the model's word for it.
+Chunk size matters more than I assumed going in  dumping whole documents into the prompt retrieves worse than smaller overlapping chunks, because the similarity search gets diluted. Getting the model to admit "I don't know" instead of confidently guessing took actual prompt iteration, it doesn't happen by default. And building everything around a free, cloud-hosted LLM instead of a local one taught me that the "proper" RAG setup people show in tutorials (Ollama + local models) isn't actually required to build something real — it's just one option.
 
 ## Future Improvements
 
@@ -116,7 +109,7 @@ Retrieval grounds an LLM's answers and prevents hallucination on domain-specific
 - Add a feedback mechanism (thumbs up/down) to track answer quality
 - Multilingual support for Urdu queries
 
-## Author
+## About me
 
 **Ayesha Abbasi**
 CS Student @ Riphah International University, Islamabad
