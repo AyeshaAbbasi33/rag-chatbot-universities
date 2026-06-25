@@ -1,35 +1,38 @@
-"""
+
 Pakistani University Admissions RAG Chatbot
-=============================================
+
 A Retrieval-Augmented Generation chatbot that answers questions about
 admissions at NUST, LUMS, and Riphah International University using
 real document content and the Groq API (cloud LLM — no local install needed).
 
-Author: Ayesha Abbasi
-"""
+
 
 import os
 import streamlit as st
 from langchain_community.document_loaders import TextLoader
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import FAISS
-from langchain_community.embeddings import HuggingFaceEmbeddings
+
+try:
+    from langchain_huggingface import HuggingFaceEmbeddings
+except ImportError:
+    from langchain_community.embeddings import HuggingFaceEmbeddings
+
 from langchain.chains import RetrievalQA
 from langchain_groq import ChatGroq
-from langchain.prompts import PromptTemplate
+from langchain_core.prompts import PromptTemplate
 
-# ──────────────────────────────────────────────────────────────────────────
 # PAGE CONFIG
-# ──────────────────────────────────────────────────────────────────────────
+
 st.set_page_config(
     page_title="Pakistani University Admissions Assistant",
     page_icon="🎓",
     layout="wide",
 )
 
-# ──────────────────────────────────────────────────────────────────────────
+
 # CUSTOM STYLING
-# ──────────────────────────────────────────────────────────────────────────
+
 st.markdown("""
 <style>
     .main-header {
@@ -60,9 +63,8 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# ──────────────────────────────────────────────────────────────────────────
 # HEADER
-# ──────────────────────────────────────────────────────────────────────────
+
 st.markdown('<p class="main-header">🎓 Pakistani University Admissions Assistant</p>', unsafe_allow_html=True)
 st.markdown(
     '<p class="sub-header">Ask questions about admissions at NUST, LUMS, and Riphah International University — '
@@ -78,9 +80,8 @@ st.markdown(
 )
 st.divider()
 
-# ──────────────────────────────────────────────────────────────────────────
 # SIDEBAR
-# ──────────────────────────────────────────────────────────────────────────
+
 with st.sidebar:
     st.header("Settings")
 
@@ -95,9 +96,9 @@ with st.sidebar:
     st.subheader("Knowledge Base")
     st.markdown("""
     This chatbot has been pre-loaded with admission information for:
-    - **NUST** — Eligibility, NET, merit criteria, fees
-    - **LUMS** — Eligibility, LCAT/SAT/ACT, financial aid
-    - **Riphah** — BSCS eligibility, fee structure, campuses
+    - NUST — Eligibility, NET, merit criteria, fees
+    - LUMS — Eligibility, LCAT/SAT/ACT, financial aid
+    - Riphah — BSCS eligibility, fee structure, campuses
     """)
 
     st.markdown("---")
@@ -117,9 +118,8 @@ with st.sidebar:
     st.markdown("---")
     st.caption("Built by Ayesha Abbasi · Powered by LangChain + Groq + FAISS")
 
-# ──────────────────────────────────────────────────────────────────────────
 # RAG PIPELINE SETUP (cached so it only runs once)
-# ──────────────────────────────────────────────────────────────────────────
+
 @st.cache_resource(show_spinner=False)
 def load_knowledge_base():
     """Load all university documents, chunk them, and build a FAISS vector store."""
@@ -185,9 +185,9 @@ Answer:"""
     return chain
 
 
-# ──────────────────────────────────────────────────────────────────────────
+
 # MAIN APP LOGIC
-# ──────────────────────────────────────────────────────────────────────────
+
 if not api_key:
     st.info("Please enter your free Groq API key in the sidebar to start chatting. "
             "Get one in 2 minutes at **console.groq.com**")
