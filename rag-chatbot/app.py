@@ -1,11 +1,10 @@
-
+"""
 Pakistani University Admissions RAG Chatbot
 
 A Retrieval-Augmented Generation chatbot that answers questions about
 admissions at NUST, LUMS, and Riphah International University using
-real document content and the Groq API (cloud LLM — no local install needed).
-
-
+real document content and the Groq API (cloud LLM - no local install needed).
+"""
 
 import os
 import streamlit as st
@@ -23,16 +22,13 @@ from langchain_groq import ChatGroq
 from langchain_core.prompts import PromptTemplate
 
 # PAGE CONFIG
-
 st.set_page_config(
     page_title="Pakistani University Admissions Assistant",
-    page_icon="🎓",
+    page_icon=":mortar_board:",
     layout="wide",
 )
 
-
 # CUSTOM STYLING
-
 st.markdown("""
 <style>
     .main-header {
@@ -65,9 +61,9 @@ st.markdown("""
 
 # HEADER
 
-st.markdown('<p class="main-header">🎓 Pakistani University Admissions Assistant</p>', unsafe_allow_html=True)
+st.markdown('<p class="main-header">Pakistani University Admissions Assistant</p>', unsafe_allow_html=True)
 st.markdown(
-    '<p class="sub-header">Ask questions about admissions at NUST, LUMS, and Riphah International University — '
+    '<p class="sub-header">Ask questions about admissions at NUST, LUMS, and Riphah International University - '
     'answered directly from official admission documents using RAG (Retrieval-Augmented Generation).</p>',
     unsafe_allow_html=True
 )
@@ -81,14 +77,13 @@ st.markdown(
 st.divider()
 
 # SIDEBAR
-
 with st.sidebar:
     st.header("Settings")
 
     api_key = st.text_input(
         "Groq API Key",
         type="password",
-        help="Get a free key at console.groq.com — no credit card needed.",
+        help="Get a free key at console.groq.com - no credit card needed.",
         value=os.environ.get("GROQ_API_KEY", "")
     )
 
@@ -96,9 +91,9 @@ with st.sidebar:
     st.subheader("Knowledge Base")
     st.markdown("""
     This chatbot has been pre-loaded with admission information for:
-    - NUST — Eligibility, NET, merit criteria, fees
-    - LUMS — Eligibility, LCAT/SAT/ACT, financial aid
-    - Riphah — BSCS eligibility, fee structure, campuses
+    - **NUST** - Eligibility, NET, merit criteria, fees
+    - **LUMS** - Eligibility, LCAT/SAT/ACT, financial aid
+    - **Riphah** - BSCS eligibility, fee structure, campuses
     """)
 
     st.markdown("---")
@@ -116,7 +111,7 @@ with st.sidebar:
             st.session_state.pending_question = q
 
     st.markdown("---")
-    st.caption("Built by Ayesha Abbasi · Powered by LangChain + Groq + FAISS")
+    st.caption("Built by Ayesha Abbasi | Powered by LangChain + Groq + FAISS")
 
 # RAG PIPELINE SETUP (cached so it only runs once)
 
@@ -162,7 +157,7 @@ def get_qa_chain(_vectorstore, api_key):
 
     prompt_template = """You are a helpful assistant answering questions about university admissions in Pakistan.
 Use ONLY the context below to answer the question. If the answer isn't in the context, say
-"I don't have that information in my knowledge base — please check the official university website."
+"I don't have that information in my knowledge base - please check the official university website."
 Always mention which university the information is about. Be specific with numbers, fees, and dates when available.
 
 Context:
@@ -231,7 +226,7 @@ if question:
 
                     with st.expander("View retrieved passages"):
                         for i, doc in enumerate(sources, 1):
-                            st.markdown(f"**Passage {i} — {doc.metadata.get('university', 'Unknown')}**")
+                            st.markdown(f"**Passage {i} - {doc.metadata.get('university', 'Unknown')}**")
                             st.text(doc.page_content[:300] + "...")
 
                 st.session_state.messages.append({"role": "assistant", "content": answer})
